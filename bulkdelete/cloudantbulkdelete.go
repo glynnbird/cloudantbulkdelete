@@ -1,4 +1,4 @@
-package main
+package bulkdelete
 
 import (
 	"encoding/json"
@@ -16,15 +16,16 @@ type CloudantBulkDelete struct {
 	service   *cloudantv1.CloudantV1 // the Cloudant SDK client
 }
 
+// the format of the output object
 type outputObject struct {
 	ID      string `json:"_id"`
 	Rev     string `json:"_rev"`
 	Deleted bool   `json:"_deleted"`
 }
 
-// NewCloudantBulkDelete creates a new CloudantBulkDelete struct, loading the CLI parameters
+// New creates a new CloudantBulkDelete struct, loading the CLI parameters
 // and instantiating the Cloudant SDK client
-func NewCloudantBulkDelete() (*CloudantBulkDelete, error) {
+func New() (*CloudantBulkDelete, error) {
 	// load the CLI parameters
 	appConfig, err := NewAppConfig()
 	if err != nil {
@@ -46,6 +47,9 @@ func NewCloudantBulkDelete() (*CloudantBulkDelete, error) {
 	return &cbd, nil
 }
 
+// Run spools through the the chosen database's changes feed with the supplied
+// selector filter. It outputs one line per matching document containing the
+// _id/_rev pair + _deleted: true to stdout
 func (cbd *CloudantBulkDelete) Run() error {
 
 	// Required: the database name.
@@ -62,13 +66,13 @@ func (cbd *CloudantBulkDelete) Run() error {
 	}
 	postChangesOptions.SetSelector(selector)
 
-	// Required: the Cloudant service client instance and an instance of PostChangesOptions
+	// create a new changes follower
 	follower, err := features.NewChangesFollower(cbd.service, postChangesOptions)
 	if err != nil {
 		return err
 	}
 
-	// start the follower
+	// start the follower, in one-off mode
 	changesCh, err := follower.StartOneOff()
 	if err != nil {
 		return err
@@ -78,15 +82,17 @@ func (cbd *CloudantBulkDelete) Run() error {
 		// changes item returns an error on failed requests
 		item, err := changesItem.Item()
 		if err != nil {
-			return err
+			continue
 		}
 
-		// do something with changes
+		// build the output struct
 		outputObj := outputObject{
 			ID:      *item.ID,
 			Rev:     *item.Changes[0].Rev,
 			Deleted: true,
 		}
+
+		// output as JSON
 		outputStr, err := json.Marshal(outputObj)
 		if err != nil {
 			return err
