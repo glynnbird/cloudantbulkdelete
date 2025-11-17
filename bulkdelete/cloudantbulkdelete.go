@@ -9,8 +9,6 @@ import (
 	"github.com/IBM/cloudant-go-sdk/features"
 )
 
-const changesBatchSize int64 = 10000
-
 type CloudantBulkDelete struct {
 	appConfig *AppConfig             // our command-line options
 	service   *cloudantv1.CloudantV1 // the Cloudant SDK client
@@ -54,7 +52,6 @@ func (cbd *CloudantBulkDelete) Run() error {
 
 	// Required: the database name.
 	postChangesOptions := cbd.service.NewPostChangesOptions(cbd.appConfig.DatabaseName)
-	postChangesOptions.SetLimit(changesBatchSize)
 	postChangesOptions.SetSince("0")
 	postChangesOptions.SetFilter("_selector")
 
