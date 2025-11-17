@@ -1,6 +1,6 @@
 # cloudantbulkdelete
 
-A command-line utility that allows assists in the deletion of many documents from a Cloudant database. The tool expects a Mango "selector" that defines the slice of data that is to be deleted. The tool can be paired with [cloudantimport](www.npmjs.com/package/cloudantimport) which will batch the changes into chunks of five hundred and bulk delete the documents found.
+A command-line utility that assists in the deletion of many documents from a Cloudant database. The tool expects a Cloudant Query "selector" that defines the slice of data that is to be deleted. The tool can be paired with [cloudantimport](https://github.com/glynnbird/cloudantimport) which will batch the changes into bulk writes to the database.
 
 ## Installation
 
@@ -14,7 +14,7 @@ The copy the resultant binary `cloudantbulkimport` (or `cloudantbulkimport.exe` 
 
 ## Configuration
 
-`cloudantimport` authenticates with your chosen Cloudant service using environment variables as documented [here](https://github.com/IBM/cloudant-go-sdk/blob/v0.10.8/docs/Authentication.md#authentication-with-environment-variables) e.g.
+`cloudantbulkimport` authenticates with your chosen Cloudant service using environment variables as documented [here](https://github.com/IBM/cloudant-go-sdk/blob/v0.10.8/docs/Authentication.md#authentication-with-environment-variables) e.g.
 
 ```sh
 CLOUDANT_URL=https://xxxyyy.cloudantnosqldb.appdomain.cloud
@@ -25,7 +25,7 @@ CLOUDANT_APIKEY="my_api_key"
 
 
 ```sh
-# delete documents where team="blue" OR date > '2020-02-01'
+# delete documents where team="red" OR date >= '2020-02-01'
 $ cloudantbulkdelete --db users --selector '{"$or":[{"team":{"$eq":"red"}},{"date": {"$gte": "2020-02-01"}}]}'
 {"_id":"e15a6a03f75d844a0ac117a3a742f589","_rev":"1-c4f1369224db88c99fa8020c2f177477","_deleted":true}
 {"_id":"e15a6a03f75d844a0ac117a3a748a0d0","_rev":"1-c9b0eb03324c3e744b0068e04f36fb52","_deleted":true}
@@ -33,7 +33,7 @@ $ cloudantbulkdelete --db users --selector '{"$or":[{"team":{"$eq":"red"}},{"dat
 
 ```
 
-The tool outputs the deletion JSON to stdout so that it can be inspected for accuracy. To actually delete the data, install [cloudantimport](www.npmjs.com/package/cloudantimport) and use the two tools together:
+The tool outputs the deletion JSON to stdout so that it can be inspected for accuracy. To actually delete the data, install [cloudantimport](https://github.com/glynnbird/cloudantimport) and use the two tools together:
 
 ```sh
 cloudantbulkdelete --db users --selector '{"team":"red"}' | cloudantimport --db users
