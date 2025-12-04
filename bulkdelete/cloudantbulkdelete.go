@@ -9,6 +9,7 @@ import (
 	"github.com/IBM/cloudant-go-sdk/features"
 )
 
+// CloudantBulkDelete stores all the data we need to run a cloudantbulkdelete job.
 type CloudantBulkDelete struct {
 	appConfig *AppConfig             // our command-line options
 	service   *cloudantv1.CloudantV1 // the Cloudant SDK client
@@ -75,7 +76,9 @@ func (cbd *CloudantBulkDelete) Run() error {
 		return err
 	}
 
+	// range through the changes feed
 	for changesItem := range changesCh {
+
 		// changes item returns an error on failed requests
 		item, err := changesItem.Item()
 		if err != nil {

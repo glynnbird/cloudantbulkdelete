@@ -3,7 +3,6 @@ package bulkdelete
 import (
 	"errors"
 	"flag"
-	"fmt"
 )
 
 // AppConfig contains the application configuration collected from command-line flags
@@ -12,13 +11,8 @@ type AppConfig struct {
 	SelectorString string
 }
 
-func (ac AppConfig) Print() {
-	fmt.Println("APP CONFIG")
-	fmt.Println("----------")
-	fmt.Printf("DatabaseName: %v\n", ac.DatabaseName)
-	fmt.Printf("Selector: %v\n", ac.SelectorString)
-}
-
+// NewAppConfig creates a new AppConfig struct by parsing the incoming command-line parameters
+// using the flag module.
 func NewAppConfig() (*AppConfig, error) {
 	appConfig := AppConfig{}
 
