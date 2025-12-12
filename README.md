@@ -10,11 +10,11 @@ You will need to [download and install the Go compiler](https://go.dev/doc/insta
 go build
 ```
 
-The copy the resultant binary `cloudantbulkimport` (or `cloudantbulkimport.exe` in Windows systems) into your path.
+The copy the resultant binary `cloudantbulkdelete` (or `cloudantbulkdelete.exe` in Windows systems) into your path.
 
 ## Configuration
 
-`cloudantbulkimport` authenticates with your chosen Cloudant service using environment variables as documented [here](https://github.com/IBM/cloudant-go-sdk/blob/v0.10.8/docs/Authentication.md#authentication-with-environment-variables) e.g.
+`cloudantbulkdelete` authenticates with your chosen Cloudant service using environment variables as documented [here](https://github.com/IBM/cloudant-go-sdk/blob/v0.10.8/docs/Authentication.md#authentication-with-environment-variables) e.g.
 
 ```sh
 CLOUDANT_URL=https://xxxyyy.cloudantnosqldb.appdomain.cloud

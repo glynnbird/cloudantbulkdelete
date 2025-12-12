@@ -86,18 +86,21 @@ func (cbd *CloudantBulkDelete) Run() error {
 		}
 
 		// build the output struct
-		outputObj := outputObject{
-			ID:      *item.ID,
-			Rev:     *item.Changes[0].Rev,
-			Deleted: true,
+		if item.ID != nil && len(item.Changes) > 0 && item.Changes[0].Rev != nil {
+			outputObj := outputObject{
+				ID:      *item.ID,
+				Rev:     *item.Changes[0].Rev,
+				Deleted: true,
+			}
+
+			// output as JSON
+			outputStr, err := json.Marshal(outputObj)
+			if err != nil {
+				return err
+			}
+			fmt.Println(string(outputStr))
 		}
 
-		// output as JSON
-		outputStr, err := json.Marshal(outputObj)
-		if err != nil {
-			return err
-		}
-		fmt.Println(string(outputStr))
 	}
 	return nil
 }

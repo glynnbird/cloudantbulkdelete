@@ -2,10 +2,10 @@ module github.com/glynnbird/cloudantbulkdelete
 
 go 1.25.1
 
+require github.com/IBM/cloudant-go-sdk v0.10.8
+
 require (
-	github.com/IBM/cloudant-go-sdk v0.10.8 // indirect
 	github.com/IBM/go-sdk-core/v5 v5.21.0 // indirect
-	github.com/asaskevich/govalidator v0.0.0-20230301143203-a9d515a09cc2 // indirect
 	github.com/gabriel-vasile/mimetype v1.4.11 // indirect
 	github.com/go-openapi/errors v0.22.4 // indirect
 	github.com/go-openapi/strfmt v0.25.0 // indirect

@@ -17,18 +17,15 @@ func NewAppConfig() (*AppConfig, error) {
 	appConfig := AppConfig{}
 
 	// parse command-line options
-	flag.StringVar(&appConfig.DatabaseName, "dbname", "", "The Cloudant database name to write to")
 	flag.StringVar(&appConfig.DatabaseName, "db", "", "The Cloudant database name to write to")
 	flag.StringVar(&appConfig.SelectorString, "selector", "", "The selector that defines the slice of data to delete")
-	flag.StringVar(&appConfig.SelectorString, "s", "", "The selector that defines the slice of data to delete")
 	flag.Parse()
 
 	// if we don't have a database name after parsing
 	if appConfig.DatabaseName == "" {
-		return nil, errors.New("missing dbname/db")
+		return nil, errors.New("missing db - please supply the Cloudant database name to delete from")
 	} else if appConfig.SelectorString == "" {
-		return nil, errors.New("missing selector")
-	} else {
-		return &appConfig, nil
+		return nil, errors.New("missing selector parameter - please supply Cloudant Query selector")
 	}
+	return &appConfig, nil
 }
