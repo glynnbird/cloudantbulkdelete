@@ -7,7 +7,7 @@ A command-line utility that assists in the deletion of many documents from a Clo
 You will need to [download and install the Go compiler](https://go.dev/doc/install). Clone this repo then:
 
 ```sh
-go build
+go build ./cmd/cloudantbulkdelete
 ```
 
 The copy the resultant binary `cloudantbulkdelete` (or `cloudantbulkdelete.exe` in Windows systems) into your path.

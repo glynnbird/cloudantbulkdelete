@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/glynnbird/cloudantbulkdelete/bulkdelete"
+	bulkdelete "github.com/glynnbird/cloudantbulkdelete/internal/app"
 )
 
 func main() {
